@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView, Dimensions } from "react-native";
+import { View, Text, ScrollView, Dimensions, TouchableOpacity } from "react-native";
 import { GestureDetector, Gesture } from "react-native-gesture-handler";
 import Animated, {
   useSharedValue,
@@ -7,6 +7,7 @@ import Animated, {
   withSpring,
 } from "react-native-reanimated";
 import MealCard from "./MealCard";
+import { RefreshCw } from "lucide-react-native"; // Import the refresh icon
 
 interface Meal {
   id: string;
@@ -98,7 +99,7 @@ const MenuDisplay: React.FC<MenuDisplayProps> = ({
   ],
   budgetFilter,
   cuisineFilters,
-  onSwipeChange = () => {},
+  onSwipeChange = () => { },
 }) => {
   const [currentBreakfastIndex, setCurrentBreakfastIndex] = useState(0);
   const [currentLunchIndex, setCurrentLunchIndex] = useState(0);
@@ -194,21 +195,34 @@ const MenuDisplay: React.FC<MenuDisplayProps> = ({
     };
   });
 
+  const handleRefresh = (mealType: "breakfast" | "lunch" | "dinner") => {
+    console.log(`${mealType} options refreshed`);
+    // Add logic to refresh meal options if needed
+  };
+
   return (
     <ScrollView className="flex-1 bg-white">
       <View className="p-4 pb-20">
         {/* Breakfast Section */}
         <View className="mb-6">
-          <Text className="text-2xl font-bold mb-2 text-gray-800">
-            Breakfast
-          </Text>
+          <View className="flex-row items-center">
+            <Text className="text-2xl font-bold mb-2 text-gray-800">Breakfast</Text>
+            <TouchableOpacity
+              onPress={() => handleRefresh("breakfast")}
+              className="flex-row items-center bg-blue-50 px-2 py-1 rounded-md ml-2"
+              accessibilityLabel="Refresh Breakfast Options"
+            >
+              <RefreshCw size={14} color="#3B82F6" />
+              <Text className="ml-1 text-xs text-blue-600 font-medium">Refresh</Text>
+            </TouchableOpacity>
+          </View>
           {filteredBreakfastOptions.length > 0 ? (
             <GestureDetector gesture={breakfastGesture}>
               <Animated.View style={breakfastAnimatedStyle}>
                 <MealCard
                   meal={
                     filteredBreakfastOptions[
-                      currentBreakfastIndex % filteredBreakfastOptions.length
+                    currentBreakfastIndex % filteredBreakfastOptions.length
                     ]
                   }
                 />
@@ -225,14 +239,24 @@ const MenuDisplay: React.FC<MenuDisplayProps> = ({
 
         {/* Lunch Section */}
         <View className="mb-6">
-          <Text className="text-2xl font-bold mb-2 text-gray-800">Lunch</Text>
+          <View className="flex-row items-center">
+            <Text className="text-2xl font-bold mb-2 text-gray-800">Lunch</Text>
+            <TouchableOpacity
+              onPress={() => handleRefresh("lunch")}
+              className="flex-row items-center bg-blue-50 px-2 py-1 rounded-md ml-2"
+              accessibilityLabel="Refresh Lunch Options"
+            >
+              <RefreshCw size={14} color="#3B82F6" />
+              <Text className="ml-1 text-xs text-blue-600 font-medium">Refresh</Text>
+            </TouchableOpacity>
+          </View>
           {filteredLunchOptions.length > 0 ? (
             <GestureDetector gesture={lunchGesture}>
               <Animated.View style={lunchAnimatedStyle}>
                 <MealCard
                   meal={
                     filteredLunchOptions[
-                      currentLunchIndex % filteredLunchOptions.length
+                    currentLunchIndex % filteredLunchOptions.length
                     ]
                   }
                 />
@@ -249,14 +273,24 @@ const MenuDisplay: React.FC<MenuDisplayProps> = ({
 
         {/* Dinner Section */}
         <View className="mb-6">
-          <Text className="text-2xl font-bold mb-2 text-gray-800">Dinner</Text>
+          <View className="flex-row items-center">
+            <Text className="text-2xl font-bold mb-2 text-gray-800">Dinner</Text>
+            <TouchableOpacity
+              onPress={() => handleRefresh("dinner")}
+              className="flex-row items-center bg-blue-50 px-2 py-1 rounded-md ml-2"
+              accessibilityLabel="Refresh Dinner Options"
+            >
+              <RefreshCw size={14} color="#3B82F6" />
+              <Text className="ml-1 text-xs text-blue-600 font-medium">Refresh</Text>
+            </TouchableOpacity>
+          </View>
           {filteredDinnerOptions.length > 0 ? (
             <GestureDetector gesture={dinnerGesture}>
               <Animated.View style={dinnerAnimatedStyle}>
                 <MealCard
                   meal={
                     filteredDinnerOptions[
-                      currentDinnerIndex % filteredDinnerOptions.length
+                    currentDinnerIndex % filteredDinnerOptions.length
                     ]
                   }
                 />

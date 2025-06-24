@@ -17,9 +17,33 @@ import {
   LogIn,
   Crown,
 } from "lucide-react-native";
+import React from "react";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+
+const MenuItem = ({
+  icon: Icon,
+  label,
+  color,
+  onPress,
+}: {
+  icon: React.ComponentType<{ size: number; color: string }>;
+  label: string;
+  color: string;
+  onPress: () => void;
+}) => (
+  <TouchableOpacity
+    className="px-4 py-3 flex-row items-center"
+    onPress={onPress}
+    accessibilityLabel={label}
+  >
+    <Icon size={18} color={color} />
+    <Text className="ml-3 text-base" style={{ color }}>
+      {label}
+    </Text>
+  </TouchableOpacity>
+);
 
 export default function RootLayout() {
   const [loaded] = useFonts({
@@ -50,69 +74,101 @@ export default function RootLayout() {
     <ThemeProvider value={DefaultTheme}>
       <View style={{ flex: 1 }}>
         {/* Burger Menu Button */}
-        <View className="absolute top-12 right-4 z-50">
-          <TouchableOpacity
-            onPress={() => setIsMenuOpen(!isMenuOpen)}
-            className="bg-white rounded-full p-3 shadow-lg border border-gray-200"
-          >
-            <Menu size={24} color="#374151" />
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          onPress={() => setIsMenuOpen(!isMenuOpen)}
+          className="absolute top-12 right-4 bg-white rounded-full p-3 shadow-lg border border-gray-200 z-50"
+          accessibilityLabel="Toggle Menu"
+        >
+          <Menu size={24} color="#374151" />
+        </TouchableOpacity>
 
-        {/* Dropdown Menu */}
+        {/* Dropdown Menu as Overlay */}
         {isMenuOpen && (
-          <View className="absolute top-20 right-4 z-40 bg-white rounded-lg shadow-xl border border-gray-200 min-w-48">
-            <View className="py-2">
-              <TouchableOpacity className="px-4 py-3 flex-row items-center">
-                <Crown size={18} color="#D97706" />
-                <Text
-                  className="ml-3 text-base font-semibold"
-                  style={{
-                    color: "#D97706",
-                    textShadowColor: "#FCD34D",
-                    textShadowOffset: { width: 0, height: 0 },
-                    textShadowRadius: 3,
-                  }}
-                >
-                  Go Pro
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity className="px-4 py-3 flex-row items-center">
-                <Settings size={18} color="#374151" />
-                <Text className="ml-3 text-base text-gray-700">Settings</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity className="px-4 py-3 flex-row items-center">
-                <User size={18} color="#374151" />
-                <Text className="ml-3 text-base text-gray-700">Account</Text>
-              </TouchableOpacity>
-
-              <View className="border-t border-gray-200 mt-1 pt-1">
-                <TouchableOpacity
-                  className="px-4 py-3 flex-row items-center"
+          <Modal transparent={true} animationType="fade" visible={isMenuOpen}>
+            <TouchableOpacity
+              className="absolute inset-0 bg-black bg-opacity-50"
+              onPress={() => setIsMenuOpen(false)}
+              activeOpacity={1}
+              accessibilityLabel="Close Menu"
+            />
+            <View className="absolute top-20 right-4 bg-white rounded-lg shadow-xl border border-gray-200 min-w-48 z-50">
+              <View className="py-4 px-4">
+                <MenuItem
+                  icon={Crown}
+                  label="Go Pro"
+                  color="#D97706"
+                  onPress={() => console.log("Go Pro clicked")}
+                />
+                <View className="border-t border-gray-200 my-2" />
+                <MenuItem
+                  icon={Settings}
+                  label="Settings"
+                  color="#374151"
+                  onPress={() => console.log("Settings clicked")}
+                />
+                <MenuItem
+                  icon={User}
+                  label="Account"
+                  color="#374151"
+                  onPress={() => console.log("Account clicked")}
+                />
+                <View className="border-t border-gray-200 my-2" />
+                <MenuItem
+                  icon={LogIn}
+                  label={isLoggedIn ? userName : "Log In"}
+                  color="#3B82F6"
                   onPress={() => setIsLoggedIn(!isLoggedIn)}
-                >
-                  <LogIn size={18} color="#3B82F6" />
-                  <Text className="ml-3 text-base text-blue-600 font-medium">
-                    {isLoggedIn ? userName : "Log In"}
-                  </Text>
-                </TouchableOpacity>
+                />
               </View>
             </View>
-          </View>
+          </Modal>
         )}
 
-        {/* Overlay to close menu when clicking outside */}
-        {isMenuOpen && (
-          <TouchableOpacity
-            className="absolute inset-0 z-30"
-            onPress={() => setIsMenuOpen(false)}
-            activeOpacity={1}
+        {/* Bottom Tab Navigation */}
+        <Tabs
+          screenOptions={{
+            tabBarActiveTintColor: "#3B82F6",
+            tabBarInactiveTintColor: "#6B7280",
+            tabBarStyle: {
+              backgroundColor: "white",
+              borderTopWidth: 1,
+              borderTopColor: "#E5E7EB",
+              paddingBottom: 8,
+              paddingTop: 8,
+              height: 70,
+            },
+            tabBarLabelStyle: {
+              fontSize: 12,
+              fontWeight: "500",
+            },
+            headerShown: false,
+          }}
+        >
+          <Tabs.Screen
+            name="index"
+            options={{
+              title: "Menu",
+              tabBarIcon: ({ color, size }) => <Home size={size} color={color} />,
+            }}
           />
-        )}
+          <Tabs.Screen
+            name="social"
+            options={{
+              title: "Social",
+              tabBarIcon: ({ color, size }) => <Users size={size} color={color} />,
+            }}
+          />
+          <Tabs.Screen
+            name="create"
+            options={{
+              title: "Create",
+              tabBarIcon: ({ color, size }) => <Plus size={size} color={color} />,
+            }}
+          />
+        </Tabs>
+
+        <StatusBar style="auto" />
       </View>
-      <StatusBar style="auto" />
     </ThemeProvider>
   );
 }
