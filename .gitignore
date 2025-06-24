@@ -1,15 +1,21 @@
-# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+# Learn more: https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
 
-# dependencies
+# ----------------------
+# Dependencies
+# ----------------------
 node_modules/
 
+# ----------------------
 # Expo
+# ----------------------
 .expo/
 dist/
 web-build/
 expo-env.d.ts
 
-# Native
+# ----------------------
+# Native Build & Credentials
+# ----------------------
 *.orig.*
 *.jks
 *.p8
@@ -17,25 +23,53 @@ expo-env.d.ts
 *.key
 *.mobileprovision
 
+# ----------------------
 # Metro
+# ----------------------
 .metro-health-check*
 
-# debug
+# ----------------------
+# Debugging & Logs
+# ----------------------
 npm-debug.*
 yarn-debug.*
 yarn-error.*
+*.log
 
-# macOS
+# ----------------------
+# macOS System Files
+# ----------------------
 .DS_Store
+
+# ----------------------
+# Certificates & Keys
+# ----------------------
 *.pem
 
-# local env files
-.env*.local
+# ----------------------
+# Local Environment Files
+# ----------------------
+.env
+.env.*.local
+.env.local
 
-# typescript
+# ----------------------
+# TypeScript
+# ----------------------
 *.tsbuildinfo
 
+# ----------------------
+# Custom App Folders
+# ----------------------
 app-example
 
+# ----------------------
+# Project-specific ignores
+# ----------------------
 **/tempobook/dynamic/
 **/tempobook/storyboards/
+
+# ----------------------
+# VSCode
+# ----------------------
+.vscode/
