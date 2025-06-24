@@ -1,3 +1,8 @@
+# Google Doc for ideas
+
+Link: (https://docs.google.com/document/d/1ymZnYIIhsXpUUn9NZMsN58XMR-dRDFNCSrQ8ebf7nUg/edit?tab=t.0).
+
+
 # Welcome to your Expo app 👋
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
