@@ -18,6 +18,7 @@ import {
   Crown,
 } from "lucide-react-native";
 import React from "react";
+import { Link } from "expo-router";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -113,12 +114,16 @@ export default function RootLayout() {
                   onPress={() => console.log("Account clicked")}
                 />
                 <View className="border-t border-gray-200 my-2" />
-                <MenuItem
-                  icon={LogIn}
-                  label={isLoggedIn ? userName : "Log In"}
-                  color="#3B82F6"
-                  onPress={() => setIsLoggedIn(!isLoggedIn)}
-                />
+                <Link href="/login" asChild >
+                  <MenuItem
+                    icon={LogIn}
+                    label={isLoggedIn ? userName : "Log In"}
+                    color="#3B82F6"
+                    onPress={() => {
+                      if (isMenuOpen) setIsMenuOpen(false);
+                    }}
+                  />
+                </Link>
               </View>
             </View>
           </Modal>
