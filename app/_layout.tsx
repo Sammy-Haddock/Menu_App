@@ -114,7 +114,7 @@ export default function RootLayout() {
                   onPress={() => console.log("Account clicked")}
                 />
                 <View className="border-t border-gray-200 my-2" />
-                <Link href="/login" asChild >
+                <Link href="/temp" asChild >
                   <MenuItem
                     icon={LogIn}
                     label={isLoggedIn ? userName : "Log In"}
